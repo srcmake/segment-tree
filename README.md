@@ -36,3 +36,7 @@ On Linux/Mac, as long as you have GCC, the following command will compile and ru
 ```
 make
 ```
+
+## LICENSE
+
+This code is licensed under the MIT License. 
