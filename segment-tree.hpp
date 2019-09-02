@@ -17,7 +17,7 @@ namespace srcmake {
 
 		public:
 			SegmentTree(); // Constructor
-			// TODO: Destructor
+			~SegmentTree(); // Destructor
 			T query(int, int); // Query a range from L to R.
 			void update(int, T); // Update an index to the new value T.
 		};
@@ -30,10 +30,25 @@ namespace srcmake {
 	template<class T>
 	SegmentTree<T>::SegmentTree()
 		{
-		std::cout << "Beginning construction of a new segment tree.\n";
+		std::cout << "Beginning construction of new segment tree.\n";
 		// TODO: Accept a vector as input and build the segment tree.
 
 		std::cout << "Finished construction of segment tree.\n";
+		}
+	////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////
+
+
+	////////////////////////////////////////////////////////////
+	/////////// Destructor ////////////////////////////////////
+	template<class T>
+	SegmentTree<T>::~SegmentTree()
+		{
+		std::cout << "Beginning destruction of segment tree.\n";
+		
+		// TODO: Deallocate the st.
+
+		std::cout << "Finished destruction of segment tree.\n";
 		}
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
