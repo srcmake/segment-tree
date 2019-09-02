@@ -1,6 +1,6 @@
 // Copyright srcmake 2019.
-// This file contains the implementation of a minimum segment tree. The 
-// tutorial for this code can be found at www.srcmake.com/home/segment-tree
+// Full tutorial: www.srcmake.com/home/segment-tree
+// This file contains the implementation of a minimum segment tree.
 
 #include <iostream>
 
@@ -11,16 +11,16 @@ namespace srcmake {
 	class SegmentTree
 		{
 		private:
-			T* st; // A pointer to the root of the ST.
+			T* st; 									// A pointer to the root of the ST.
 			void AllocateEmptyST(); // Allocate the space for an empty ST.
-			void DeallocateST(); // Delete the ST previously created.
-			void FillInST(); // Fill the ST with the proper values.
+			void DeallocateST(); 		// Delete the ST previously created.
+			void FillInST(); 				// Fill the ST with the proper values.
 
 		public:
-			SegmentTree(); // Constructor
-			~SegmentTree(); // Destructor
-			T query(int, int); // Query a range from L to R.
-			void update(int, T); // Update an index to the new value T.
+			SegmentTree(); 					// Constructor
+			~SegmentTree(); 				// Destructor
+			T query(int, int); 			// Query a range from L to R.
+			void update(int, T);	 	// Update an index to the new value T.
 		};
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
