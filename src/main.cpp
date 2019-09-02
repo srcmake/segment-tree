@@ -1,5 +1,6 @@
 // Copyright srcmake 2019.
 #include <iostream>
+#include <vector>
 #include "segment-tree.hpp"
 
 using namespace std;
@@ -8,9 +9,11 @@ int main()
 	{
 	cout << "Program started.\n";
 
-	// TODO: Create a vector with our initial range.
+	// Our initial range.
+	vector<int> v = { 2, 8, 5, 3, 9, 4, 1 };
+
 	// TODO: Pass that vector in when instantiating the ST.
-	srcmake::SegmentTree<int> srcmakeSegmentTree = srcmake::SegmentTree<int>();
+	srcmake::SegmentTree<int> srcmakeSegmentTree = srcmake::SegmentTree<int>(v);
 
 	// TODO: Some example queries and updates.
 	srcmakeSegmentTree.query(0, 1);

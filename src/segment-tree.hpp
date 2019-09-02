@@ -3,6 +3,8 @@
 // This file contains the implementation of a minimum segment tree.
 
 #include <iostream>
+#include <vector>
+#include <cmath>
 
 namespace srcmake {
 	////////////////////////////////////////////////////////////
@@ -11,16 +13,19 @@ namespace srcmake {
 	class SegmentTree
 		{
 		private:
-			T* st; 									// A pointer to the root of the ST.
-			void AllocateEmptyST(); // Allocate the space for an empty ST.
-			void DeallocateST(); 		// Delete the ST previously created.
-			void FillInST(); 				// Fill the ST with the proper values.
+			T* st; 																				// A pointer to the root of the ST.
+			int stArrayLength;														// The length of the st array. (Num leaves.)
+			int originalArrayLength;											// The length of the original array.
+			void AllocateEmptyST(const std::vector<T>&); 	// Allocate the space for an empty ST.
+			void DeallocateST(); 													// Delete the ST previously created.
+			void FillInST(const std::vector<T>&); 				// Fill the ST with the proper values.
 
 		public:
-			SegmentTree(); 					// Constructor
-			~SegmentTree(); 				// Destructor
-			T query(int, int); 			// Query a range from L to R.
-			void update(int, T);	 	// Update an index to the new value T.
+			SegmentTree(std::vector<T>); 	// Constructor
+			~SegmentTree(); 							// Destructor
+			T query(int, int); 						// Query a range from L to R.
+			void update(int, T);	 				// Update an index to the new value T.
+			void print();									// Print the current segment tree (in-order).
 		};
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
@@ -29,18 +34,25 @@ namespace srcmake {
 	////////////////////////////////////////////////////////////
 	/////////// Constructor ////////////////////////////////////
 	template<class T>
-	void SegmentTree<T>::AllocateEmptyST()
+	void SegmentTree<T>::AllocateEmptyST(const std::vector<T>& originalArray)
 		{
 		std::cout << "Beginning allocation of memory for the segment tree.\n";
 
-		// TODO: Calculate the size of the tree and allocate an array for it.
-		// TODO: Make st point to that array.
+		// Calculate the number of Leaves of our st will need.
+		int stHeight = ceil(log2(originalArrayLength));
+		int maxNumLeaves = (2 * pow(2, stHeight)) - 1;
+
+		// Set our private variable for the st's length.
+		stArrayLength = maxNumLeaves; 
+		
+		// Allocate an array of that length, and assign it to st.
+		st = new T[stArrayLength];
 
 		std::cout << "Finished allocation of memory for the segment tree.\n";
 		}
 
 	template<class T>
-	void SegmentTree<T>::FillInST()
+	void SegmentTree<T>::FillInST(const std::vector<T>&)
 		{
 		std::cout << "Beginning to fill in the segment tree with values.\n";
 
@@ -50,13 +62,14 @@ namespace srcmake {
 		}
 
 	template<class T>
-	SegmentTree<T>::SegmentTree()
+	SegmentTree<T>::SegmentTree(std::vector<T> originalArray)
 		{
 		std::cout << "Beginning construction of new segment tree.\n";
-		// TODO: Accept a vector as input and build the segment tree.
-
-		AllocateEmptyST();
-		FillInST();
+		
+		originalArrayLength = originalArray.size();
+		AllocateEmptyST(originalArray);
+		print();
+		FillInST(originalArray);
 
 		std::cout << "Finished construction of segment tree.\n";
 		}
@@ -113,6 +126,21 @@ namespace srcmake {
 		// TODO: Do the actual update.
 
 		std::cout << "Finished updating index " << index << ".\n";
+		}
+	////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////
+
+
+	////////////////////////////////////////////////////////////
+	/////////// Print //////////////////////////////////////////
+	template<class T>
+	void SegmentTree<T>::print()
+		{
+		// This only works on primitive data types.
+		for(int i = 0; i < stArrayLength; i++)
+			{ std::cout << st[i] << " "; }
+		
+		std::cout << "\n";
 		}
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
