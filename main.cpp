@@ -15,6 +15,7 @@ int main()
 
 	// TODO: Some example queries and updates.
 	srcmakeSegmentTree.query(0, 1);
+	srcmakeSegmentTree.update(0, 5);
 
 	cout << "Program finished.\n";
 	}
