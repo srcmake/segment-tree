@@ -13,20 +13,20 @@ namespace srcmake {
 	class SegmentTree
 		{
 		private:
-			T* st; 																				// A pointer to the root of the ST.
-			int stArrayLength;														// The length of the st array. (Num leaves.)
-			int originalArrayLength;											// The length of the original array.
-			void AllocateEmptyST(const std::vector<T>&); 	// Allocate the space for an empty ST.
-			void DeallocateST(); 													// Delete the ST previously created.
-			void FillInST(const std::vector<T>&); 				// Fill the ST with the proper values.
-			T RecursivelyFillST(int, int, int, const std::vector<T>&); 	// Fill the ST with the proper values.
+			T* st;	// A pointer to the root of the ST.
+			int stArrayLength;	// The length of the st array. (Num leaves.)
+			int originalArrayLength;	// The length of the original array.
+			void AllocateEmptyST(const std::vector<T>&);	// Allocate the space for an empty ST.
+			void DeallocateST();	// Delete the ST previously created.
+			void FillInST(const std::vector<T>&);// Fill the ST with the proper values.
+			T RecursivelyFillST(int, int, int, const std::vector<T>&); 	// Recursively find, set, return min of node.
 
 		public:
-			SegmentTree(std::vector<T>); 	// Constructor
-			~SegmentTree(); 							// Destructor
-			T query(int, int); 						// Query a range from L to R.
-			void update(int, T);	 				// Update an index to the new value T.
-			void print();									// Print the current segment tree (in-order).
+			SegmentTree(std::vector<T>);	// Constructor
+			~SegmentTree();	// Destructor
+			T query(int, int);	// Query a range from L to R.
+			void update(int, T);	// Update an index to the new value T.
+			void print();	// Print the current segment tree (in-order).
 		};
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
