@@ -130,8 +130,9 @@ namespace srcmake {
 		{
 		// Delete the st array, set the pointer to null, and internally say the length is 0.
 		delete[] st;
-		st = NULL;
+		st = nullptr;
 		stArrayLength = 0;
+		originalArrayLength = 0;
 		}
 
 	template<class T>
