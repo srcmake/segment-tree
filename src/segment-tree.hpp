@@ -20,6 +20,7 @@ namespace srcmake {
 			void DeallocateST();	// Delete the ST previously created.
 			void FillInST(const std::vector<T>&);// Fill the ST with the proper values.
 			T RecursivelyFillST(int, int, int, const std::vector<T>&); 	// Recursively find, set, return min of node.
+			T RecursivelySearchForMin(int, int, int, int, int);	// Recursively search a node from L to R for it's children's min values (if necessary).
 
 		public:
 			SegmentTree(std::vector<T>);	// Constructor
@@ -147,12 +148,76 @@ namespace srcmake {
 	////////////////////////////////////////////////////////////
 	/////////// Query //////////////////////////////////////////
 	template<class T>
+	T SegmentTree<T>::RecursivelySearchForMin(
+			int L, 
+			int R, 
+			int nodeNumber,
+			int nodeStartIndex,
+			int nodeEndIndex)
+		{
+		// If this node's range is anywhere outside of [L, R], we can't consider it.
+		// Just return some really big number (which won't ever be a valid min).
+		if(nodeEndIndex < L || R < nodeStartIndex)
+			{
+			T value = 10000000;
+			return value;
+			}
+		// Otherwise, if this node is completely within [L, R], just return the node's value.
+		else if(L <= nodeStartIndex && nodeEndIndex <= R)
+			{
+			T value = st[nodeNumber-1];
+			return value;
+			}
+		// Otherwise, this node is partially within [L, R].
+		else
+			{
+			// Recursively check this node's children and return the min between the two.
+			int middleIndex = nodeStartIndex + ((nodeEndIndex - nodeStartIndex) / 2);
+
+			int leftChildNodeNumber = 2 * nodeNumber;
+			int leftChildStartIndex = nodeStartIndex;
+			int leftChildEndIndex = middleIndex;
+
+			int rightChildNodeNumber = 2 * nodeNumber + 1;
+			int rightChildStartIndex = middleIndex + 1;
+			int rightChildEndIndex = nodeEndIndex;
+
+			T leftChildMin = RecursivelySearchForMin(
+				L,
+				R,
+				leftChildNodeNumber, 
+				leftChildStartIndex, 
+				leftChildEndIndex);
+
+			T rightChildMin = RecursivelySearchForMin(
+				L,
+				R,
+				rightChildNodeNumber, 
+				rightChildStartIndex, 
+				rightChildEndIndex);
+
+			// The minimum value of this node is the min between it's two children.
+			T value = std::min(leftChildMin, rightChildMin);
+
+			// Return this value back up the recursion stack.
+			return value;
+			}
+		}
+
+	template<class T>
 	T SegmentTree<T>::query(int L, int R)
 		{
-		std::cout << "Querying from range " << L << " to " << R << ".\n";
+		// Validate that L and R are valid.
+		if(L > R) { throw "L must be <= R.\n"; }
+		if(L < 0) { throw "L is outside valid range.\n"; }
+		if(R > originalArrayLength - 1) { throw "R is outside valid range.\n"; }
 
-		// TODO: Do the actual query.
-		return 0;
+		// Starting with the root, recursively search the tree for it's min value in [L, R].
+		int rootNodeNumber = 1;
+		int nodeStartIndex = 0;
+		int nodeEndIndex = originalArrayLength - 1;
+		T value = RecursivelySearchForMin(L, R, rootNodeNumber, nodeStartIndex, nodeEndIndex);
+		return value;
 		}
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
@@ -165,6 +230,7 @@ namespace srcmake {
 		{
 		std::cout << "Updating index " << index << " to a new value.\n";
 
+		// TODO: Validate that the index and newValue are valid.
 		// TODO: Do the actual update.
 
 		std::cout << "Finished updating index " << index << ".\n";

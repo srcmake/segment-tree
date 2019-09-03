@@ -31,8 +31,25 @@ int main()
 	// Print the tree (in-order heap version) so we can see it.
 	srcmakeSegmentTree2.print();
 
-	// TODO: Some example queries and updates.
-	srcmakeSegmentTree2.query(0, 1);
+	// Some example queries and updates.
+	int L = 0;
+	int R = 6;
+	cout << "Min from " << L << " to " << R << " is " << srcmakeSegmentTree2.query(L, R) << ".\n";
+
+	R = 5;
+	cout << "Min from " << L << " to " << R << " is " << srcmakeSegmentTree2.query(L, R) << ".\n";
+
+	L = 1;
+	R = 1;
+	cout << "Min from " << L << " to " << R << " is " << srcmakeSegmentTree2.query(L, R) << ".\n";
+
+	L = 4;
+	R = 5;
+	cout << "Min from " << L << " to " << R << " is " << srcmakeSegmentTree2.query(L, R) << ".\n";
+
+	R = 6;
+	cout << "Min from " << L << " to " << R << " is " << srcmakeSegmentTree2.query(L, R) << ".\n";
+
 	srcmakeSegmentTree2.update(0, 5);
 	////////////////////////////////////////////////////////////
 	
