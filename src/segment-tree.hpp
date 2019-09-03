@@ -108,10 +108,10 @@ namespace srcmake {
 	void SegmentTree<T>::FillInST(const std::vector<T>& originalArray)
 		{
 		// Starting with the root node of the st, recursively fill in the values in the ST.
-		int rootnodeIndex = 0;
-		int nodeStartIndex = 0;
-		int nodeEndIndex = originalArrayLength - 1;
-		RecursivelyFillST(rootnodeIndex, nodeStartIndex, nodeEndIndex, originalArray);
+		int rootNodeIndex = 0;
+		int rootNodeStartIndex = 0;
+		int rootNodeEndIndex = originalArrayLength - 1;
+		RecursivelyFillST(rootNodeIndex, rootNodeStartIndex, rootNodeEndIndex, originalArray);
 		}
 
 	template<class T>
@@ -214,10 +214,10 @@ namespace srcmake {
 		if(R > originalArrayLength - 1) { throw "R is outside valid range.\n"; }
 
 		// Starting with the root, recursively search the tree for it's min value in [L, R].
-		int rootnodeIndex = 0;
-		int nodeStartIndex = 0;
-		int nodeEndIndex = originalArrayLength - 1;
-		T value = RecursivelySearchForMin(L, R, rootnodeIndex, nodeStartIndex, nodeEndIndex);
+		int rootNodeIndex = 0;
+		int rootNodeStartIndex = 0;
+		int rootNodeEndIndex = originalArrayLength - 1;
+		T value = RecursivelySearchForMin(L, R, rootNodeIndex, rootNodeStartIndex, rootNodeEndIndex);
 		return value;
 		}
 	////////////////////////////////////////////////////////////
@@ -298,10 +298,10 @@ namespace srcmake {
 
 		// Starting with the root, recursively update the nodes if the newValue is better
 		// than the node's current min (and the index is in the node's range).
-		int rootnodeIndex = 0;
-		int nodeStartIndex = 0;
-		int nodeEndIndex = originalArrayLength - 1;
-		RecursivelyUpdate(newValueIndex, newValue, rootnodeIndex, nodeStartIndex, nodeEndIndex);
+		int rootNodeIndex = 0;
+		int rootNodeStartIndex = 0;
+		int rootNodeEndIndex = originalArrayLength - 1;
+		RecursivelyUpdate(newValueIndex, newValue, rootNodeIndex, rootNodeStartIndex, rootNodeEndIndex);
 		}
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
