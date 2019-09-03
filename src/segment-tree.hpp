@@ -21,6 +21,7 @@ namespace srcmake {
 			void FillInST(const std::vector<T>&);// Fill the ST with the proper values.
 			T RecursivelyFillST(int, int, int, const std::vector<T>&); 	// Recursively find, set, return min of node.
 			T RecursivelySearchForMin(int, int, int, int, int);	// Recursively search a node from L to R for it's children's min values (if necessary).
+			void RecursivelyUpdate(int, T, int, int, int);	// Recursively update a node with the newValue if it's within the node's range.
 
 		public:
 			SegmentTree(std::vector<T>);	// Constructor
@@ -226,14 +227,81 @@ namespace srcmake {
 	////////////////////////////////////////////////////////////
 	/////////// Update //////////////////////////////////////////
 	template<class T>
-	void SegmentTree<T>::update(int index, T newValue)
+	void SegmentTree<T>::RecursivelyUpdate(
+			int newValueIndex, 
+			T newValue, 
+			int nodeNumber,
+			int nodeStartIndex,
+			int nodeEndIndex)
 		{
-		std::cout << "Updating value at index " << index << " to new value of " << newValue << ".\n";
+		// If the start index is the same as the end index, then this range represents one node.
+		// We'll also check that this node's start/endIndex are the same as the newValueIndex.
+		// The exact value of this node must be updated with the new value.
+		if(nodeStartIndex == nodeEndIndex && nodeStartIndex == newValueIndex)
+			{
+			st[nodeNumber-1] = newValue;
+			return;
+			}
+
+		// Otherwise, the range is wider than one node and so we should check if
+		// this node's children need to be updated.
+		int middleIndex = nodeStartIndex + ((nodeEndIndex - nodeStartIndex) / 2);
+
+		int leftChildNodeNumber = 2 * nodeNumber;
+		int rightChildNodeNumber = 2 * nodeNumber + 1;
+
+		// We only need to update one subtree, either left or right, based on the newValueIndex.
+		// If the newValueIndex is in the left subtree...
+		if(nodeStartIndex <= newValueIndex && newValueIndex <= middleIndex)
+			{
+			// ...Then recursively update the left children as necessary.
+			int leftChildStartIndex = nodeStartIndex;
+			int leftChildEndIndex = middleIndex;
+
+			RecursivelyUpdate(
+				newValueIndex, 
+				newValue, 
+				leftChildNodeNumber, 
+				leftChildStartIndex, 
+				leftChildEndIndex);
+			}
+		// Otherwise if the newValueIndex is in the right subtree...
+		else
+			{
+			// ...Then recursively update the right children as necessary.
+			int rightChildStartIndex = middleIndex + 1;
+			int rightChildEndIndex = nodeEndIndex;
+
+			RecursivelyUpdate(
+				newValueIndex, 
+				newValue, 
+				rightChildNodeNumber, 
+				rightChildStartIndex, 
+				rightChildEndIndex);
+			}
+
+		
+		// We need to recalculate this node's minimum based on its two children.
+		// (One of the children might have gotten updated.)
+		T value = std::min(st[leftChildNodeNumber-1], st[rightChildNodeNumber-1]);
+
+		st[nodeNumber-1] = value;
+		}
+
+	template<class T>
+	void SegmentTree<T>::update(int newValueIndex, T newValue)
+		{
+		std::cout << "Updating value at index " << newValueIndex << " to new value of " << newValue << ".\n";
 
 		// Validate that the index and newValue are valid.
-		if(index < 0 || index > originalArrayLength - 1) { throw "index is outside valid range.\n"; }
-		
-		// TODO: Do the actual update.
+		if(newValueIndex < 0 || newValueIndex > originalArrayLength - 1) { throw "index is outside valid range.\n"; }
+
+		// Starting with the root, recursively update the nodes if the newValue is better
+		// than the node's current min (and the index is in the node's range).
+		int rootNodeNumber = 1;
+		int nodeStartIndex = 0;
+		int nodeEndIndex = originalArrayLength - 1;
+		RecursivelyUpdate(newValueIndex, newValue, rootNodeNumber, nodeStartIndex, nodeEndIndex);
 		}
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////

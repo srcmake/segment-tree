@@ -49,6 +49,8 @@ int main()
 
 	srcmakeSegmentTree2.update(5, 6);
 
+	srcmakeSegmentTree2.print();
+
 	cout << "Min from " << L << " to " << R << " is " << srcmakeSegmentTree2.query(L, R) << ".\n";
 
 	R = 6;
