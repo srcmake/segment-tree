@@ -52,7 +52,7 @@ namespace srcmake {
 
 	template<class T>
 	T SegmentTree<T>::RecursivelyFillST(
-			int nodeNumber,
+			int nodeIndex,
 			int nodeStartIndex,
 			int nodeEndIndex,
 			const std::vector<T>& originalArray)
@@ -63,7 +63,7 @@ namespace srcmake {
 			T value = originalArray[nodeStartIndex];
 
 			// Set the value for this node of the st.
-			st[nodeNumber-1] = value;
+			st[nodeIndex] = value;
 
 			// Return this value back up the recursion stack.
 			return value;
@@ -73,23 +73,23 @@ namespace srcmake {
 		// Calculate the start and end indexes for the two children.
 		int middleIndex = nodeStartIndex + ((nodeEndIndex - nodeStartIndex) / 2);
 
-		int leftChildNodeNumber = 2 * nodeNumber;
+		int leftChildnodeIndex = 2 * nodeIndex + 1;
 		int leftChildStartIndex = nodeStartIndex;
 		int leftChildEndIndex = middleIndex;
 
-		int rightChildNodeNumber = 2 * nodeNumber + 1;
+		int rightChildnodeIndex = 2 * nodeIndex + 2;
 		int rightChildStartIndex = middleIndex + 1;
 		int rightChildEndIndex = nodeEndIndex;
 
 		// Recursively find the minimum for the each child.
 		T leftChildMin = RecursivelyFillST(
-			leftChildNodeNumber, 
+			leftChildnodeIndex, 
 			leftChildStartIndex, 
 			leftChildEndIndex, 
 			originalArray);
 
 		T rightChildMin = RecursivelyFillST(
-			rightChildNodeNumber, 
+			rightChildnodeIndex, 
 			rightChildStartIndex, 
 			rightChildEndIndex, 
 			originalArray);
@@ -98,7 +98,7 @@ namespace srcmake {
 		T value = std::min(leftChildMin, rightChildMin);
 
 		// Set the value for this node of the st.
-		st[nodeNumber-1] = value;
+		st[nodeIndex] = value;
 
 		// Return this value back up the recursion stack.
 		return value;
@@ -108,10 +108,10 @@ namespace srcmake {
 	void SegmentTree<T>::FillInST(const std::vector<T>& originalArray)
 		{
 		// Starting with the root node of the st, recursively fill in the values in the ST.
-		int rootNodeNumber = 1;
+		int rootnodeIndex = 0;
 		int nodeStartIndex = 0;
 		int nodeEndIndex = originalArrayLength - 1;
-		RecursivelyFillST(rootNodeNumber, nodeStartIndex, nodeEndIndex, originalArray);
+		RecursivelyFillST(rootnodeIndex, nodeStartIndex, nodeEndIndex, originalArray);
 		}
 
 	template<class T>
@@ -152,7 +152,7 @@ namespace srcmake {
 	T SegmentTree<T>::RecursivelySearchForMin(
 			int L, 
 			int R, 
-			int nodeNumber,
+			int nodeIndex,
 			int nodeStartIndex,
 			int nodeEndIndex)
 		{
@@ -166,7 +166,7 @@ namespace srcmake {
 		// Otherwise, if this node is completely within [L, R], just return the node's value.
 		else if(L <= nodeStartIndex && nodeEndIndex <= R)
 			{
-			T value = st[nodeNumber-1];
+			T value = st[nodeIndex];
 			return value;
 			}
 		// Otherwise, this node is partially within [L, R].
@@ -175,25 +175,25 @@ namespace srcmake {
 			// Recursively check this node's children and return the min between the two.
 			int middleIndex = nodeStartIndex + ((nodeEndIndex - nodeStartIndex) / 2);
 
-			int leftChildNodeNumber = 2 * nodeNumber;
+			int leftChildnodeIndex = 2 * nodeIndex + 1;
 			int leftChildStartIndex = nodeStartIndex;
 			int leftChildEndIndex = middleIndex;
 
-			int rightChildNodeNumber = 2 * nodeNumber + 1;
+			int rightChildnodeIndex = 2 * nodeIndex + 2;
 			int rightChildStartIndex = middleIndex + 1;
 			int rightChildEndIndex = nodeEndIndex;
 
 			T leftChildMin = RecursivelySearchForMin(
 				L,
 				R,
-				leftChildNodeNumber, 
+				leftChildnodeIndex, 
 				leftChildStartIndex, 
 				leftChildEndIndex);
 
 			T rightChildMin = RecursivelySearchForMin(
 				L,
 				R,
-				rightChildNodeNumber, 
+				rightChildnodeIndex, 
 				rightChildStartIndex, 
 				rightChildEndIndex);
 
@@ -214,10 +214,10 @@ namespace srcmake {
 		if(R > originalArrayLength - 1) { throw "R is outside valid range.\n"; }
 
 		// Starting with the root, recursively search the tree for it's min value in [L, R].
-		int rootNodeNumber = 1;
+		int rootnodeIndex = 0;
 		int nodeStartIndex = 0;
 		int nodeEndIndex = originalArrayLength - 1;
-		T value = RecursivelySearchForMin(L, R, rootNodeNumber, nodeStartIndex, nodeEndIndex);
+		T value = RecursivelySearchForMin(L, R, rootnodeIndex, nodeStartIndex, nodeEndIndex);
 		return value;
 		}
 	////////////////////////////////////////////////////////////
@@ -230,7 +230,7 @@ namespace srcmake {
 	void SegmentTree<T>::RecursivelyUpdate(
 			int newValueIndex, 
 			T newValue, 
-			int nodeNumber,
+			int nodeIndex,
 			int nodeStartIndex,
 			int nodeEndIndex)
 		{
@@ -239,7 +239,7 @@ namespace srcmake {
 		// The exact value of this node must be updated with the new value.
 		if(nodeStartIndex == nodeEndIndex && nodeStartIndex == newValueIndex)
 			{
-			st[nodeNumber-1] = newValue;
+			st[nodeIndex] = newValue;
 			return;
 			}
 
@@ -247,8 +247,8 @@ namespace srcmake {
 		// this node's children need to be updated.
 		int middleIndex = nodeStartIndex + ((nodeEndIndex - nodeStartIndex) / 2);
 
-		int leftChildNodeNumber = 2 * nodeNumber;
-		int rightChildNodeNumber = 2 * nodeNumber + 1;
+		int leftChildnodeIndex = 2 * nodeIndex + 1;
+		int rightChildnodeIndex = 2 * nodeIndex + 2;
 
 		// We only need to update one subtree, either left or right, based on the newValueIndex.
 		// If the newValueIndex is in the left subtree...
@@ -261,7 +261,7 @@ namespace srcmake {
 			RecursivelyUpdate(
 				newValueIndex, 
 				newValue, 
-				leftChildNodeNumber, 
+				leftChildnodeIndex, 
 				leftChildStartIndex, 
 				leftChildEndIndex);
 			}
@@ -275,7 +275,7 @@ namespace srcmake {
 			RecursivelyUpdate(
 				newValueIndex, 
 				newValue, 
-				rightChildNodeNumber, 
+				rightChildnodeIndex, 
 				rightChildStartIndex, 
 				rightChildEndIndex);
 			}
@@ -283,9 +283,9 @@ namespace srcmake {
 		
 		// We need to recalculate this node's minimum based on its two children.
 		// (One of the children might have gotten updated.)
-		T value = std::min(st[leftChildNodeNumber-1], st[rightChildNodeNumber-1]);
+		T value = std::min(st[leftChildnodeIndex], st[rightChildnodeIndex]);
 
-		st[nodeNumber-1] = value;
+		st[nodeIndex] = value;
 		}
 
 	template<class T>
@@ -298,10 +298,10 @@ namespace srcmake {
 
 		// Starting with the root, recursively update the nodes if the newValue is better
 		// than the node's current min (and the index is in the node's range).
-		int rootNodeNumber = 1;
+		int rootnodeIndex = 0;
 		int nodeStartIndex = 0;
 		int nodeEndIndex = originalArrayLength - 1;
-		RecursivelyUpdate(newValueIndex, newValue, rootNodeNumber, nodeStartIndex, nodeEndIndex);
+		RecursivelyUpdate(newValueIndex, newValue, rootnodeIndex, nodeStartIndex, nodeEndIndex);
 		}
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
