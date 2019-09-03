@@ -128,21 +128,16 @@ namespace srcmake {
 	template<class T>
 	void SegmentTree<T>::DeallocateST()
 		{
-		std::cout << "Beginning deallocation of memory used for the segment tree.\n";
-
-		// TODO: Delete st.
-
-		std::cout << "Finished deallocation of memory used for the segment tree.\n";
+		// Delete the st array, set the pointer to null, and internally say the length is 0.
+		delete[] st;
+		st = NULL;
+		stArrayLength = 0;
 		}
 
 	template<class T>
 	SegmentTree<T>::~SegmentTree()
 		{
-		std::cout << "Beginning destruction of segment tree.\n";
-		
 		DeallocateST();
-
-		std::cout << "Finished destruction of segment tree.\n";
 		}
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
