@@ -19,6 +19,7 @@ namespace srcmake {
 			void AllocateEmptyST(const std::vector<T>&); 	// Allocate the space for an empty ST.
 			void DeallocateST(); 													// Delete the ST previously created.
 			void FillInST(const std::vector<T>&); 				// Fill the ST with the proper values.
+			T RecursivelyFillST(int, int, int, const std::vector<T>&); 	// Fill the ST with the proper values.
 
 		public:
 			SegmentTree(std::vector<T>); 	// Constructor
@@ -36,8 +37,6 @@ namespace srcmake {
 	template<class T>
 	void SegmentTree<T>::AllocateEmptyST(const std::vector<T>& originalArray)
 		{
-		std::cout << "Beginning allocation of memory for the segment tree.\n";
-
 		// Calculate the number of Leaves of our st will need.
 		int stHeight = ceil(log2(originalArrayLength));
 		int maxNumLeaves = (2 * pow(2, stHeight)) - 1;
@@ -47,31 +46,78 @@ namespace srcmake {
 		
 		// Allocate an array of that length, and assign it to st.
 		st = new T[stArrayLength];
-
-		std::cout << "Finished allocation of memory for the segment tree.\n";
 		}
 
 	template<class T>
-	void SegmentTree<T>::FillInST(const std::vector<T>&)
+	T SegmentTree<T>::RecursivelyFillST(
+			int nodeNumber,
+			int nodeStartIndex,
+			int nodeEndIndex,
+			const std::vector<T>& originalArray)
 		{
-		std::cout << "Beginning to fill in the segment tree with values.\n";
+		// If the range is one element long, then there's only one possible min value.
+		if(nodeStartIndex == nodeEndIndex)
+			{
+			T value = originalArray[nodeStartIndex];
 
-		// TODO: Fill the values of the ST in.
+			// Set the value for this node of the st.
+			st[nodeNumber-1] = value;
 
-		std::cout << "Finished filling in the segment tree with values.\n";
+			// Return this value back up the recursion stack.
+			return value;
+			}
+
+		// Otherwise, we need to find the min by recursively asking this node's children for their mins.
+		// Calculate the start and end indexes for the two children.
+		int middleIndex = nodeStartIndex + ((nodeEndIndex - nodeStartIndex) / 2);
+
+		int leftChildNodeNumber = 2 * nodeNumber;
+		int leftChildStartIndex = nodeStartIndex;
+		int leftChildEndIndex = middleIndex;
+
+		int rightChildNodeNumber = 2 * nodeNumber + 1;
+		int rightChildStartIndex = middleIndex + 1;
+		int rightChildEndIndex = nodeEndIndex;
+
+		// Recursively find the minimum for the each child.
+		T leftChildMin = RecursivelyFillST(
+			leftChildNodeNumber, 
+			leftChildStartIndex, 
+			leftChildEndIndex, 
+			originalArray);
+
+		T rightChildMin = RecursivelyFillST(
+			rightChildNodeNumber, 
+			rightChildStartIndex, 
+			rightChildEndIndex, 
+			originalArray);
+
+		// The minimum value of this node is the min between it's two children.
+		T value = std::min(leftChildMin, rightChildMin);
+
+		// Set the value for this node of the st.
+		st[nodeNumber-1] = value;
+
+		// Return this value back up the recursion stack.
+		return value;
+		}
+
+	template<class T>
+	void SegmentTree<T>::FillInST(const std::vector<T>& originalArray)
+		{
+		// Starting with the root node of the st, recursively fill in the values in the ST.
+		int rootNodeNumber = 1;
+		int nodeStartIndex = 0;
+		int nodeEndIndex = originalArrayLength - 1;
+		RecursivelyFillST(rootNodeNumber, nodeStartIndex, nodeEndIndex, originalArray);
 		}
 
 	template<class T>
 	SegmentTree<T>::SegmentTree(std::vector<T> originalArray)
 		{
-		std::cout << "Beginning construction of new segment tree.\n";
-		
 		originalArrayLength = originalArray.size();
 		AllocateEmptyST(originalArray);
-		print();
 		FillInST(originalArray);
-
-		std::cout << "Finished construction of segment tree.\n";
 		}
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
