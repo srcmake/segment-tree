@@ -47,10 +47,13 @@ int main()
 	R = 5;
 	cout << "Min from " << L << " to " << R << " is " << srcmakeSegmentTree2.query(L, R) << ".\n";
 
+	srcmakeSegmentTree2.update(5, 6);
+
+	cout << "Min from " << L << " to " << R << " is " << srcmakeSegmentTree2.query(L, R) << ".\n";
+
 	R = 6;
 	cout << "Min from " << L << " to " << R << " is " << srcmakeSegmentTree2.query(L, R) << ".\n";
 
-	srcmakeSegmentTree2.update(0, 5);
 	////////////////////////////////////////////////////////////
 	
 	cout << "Program finished.\n";

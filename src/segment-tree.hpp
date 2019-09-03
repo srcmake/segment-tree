@@ -228,12 +228,12 @@ namespace srcmake {
 	template<class T>
 	void SegmentTree<T>::update(int index, T newValue)
 		{
-		std::cout << "Updating index " << index << " to a new value.\n";
+		std::cout << "Updating value at index " << index << " to new value of " << newValue << ".\n";
 
-		// TODO: Validate that the index and newValue are valid.
+		// Validate that the index and newValue are valid.
+		if(index < 0 || index > originalArrayLength - 1) { throw "index is outside valid range.\n"; }
+		
 		// TODO: Do the actual update.
-
-		std::cout << "Finished updating index " << index << ".\n";
 		}
 	////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////
@@ -244,7 +244,6 @@ namespace srcmake {
 	template<class T>
 	void SegmentTree<T>::print()
 		{
-		// This only works on primitive data types.
 		for(int i = 0; i < stArrayLength; i++)
 			{ std::cout << st[i] << " "; }
 		
