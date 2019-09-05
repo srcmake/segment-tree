@@ -73,23 +73,23 @@ namespace srcmake {
 		// Calculate the start and end indexes for the two children.
 		int middleIndex = nodeStartIndex + ((nodeEndIndex - nodeStartIndex) / 2);
 
-		int leftChildnodeIndex = 2 * nodeIndex + 1;
+		int leftChildNodeIndex = 2 * nodeIndex + 1;
 		int leftChildStartIndex = nodeStartIndex;
 		int leftChildEndIndex = middleIndex;
 
-		int rightChildnodeIndex = 2 * nodeIndex + 2;
+		int rightChildNodeIndex = 2 * nodeIndex + 2;
 		int rightChildStartIndex = middleIndex + 1;
 		int rightChildEndIndex = nodeEndIndex;
 
 		// Recursively find the minimum for the each child.
 		T leftChildMin = RecursivelyFillST(
-			leftChildnodeIndex, 
+			leftChildNodeIndex, 
 			leftChildStartIndex, 
 			leftChildEndIndex, 
 			originalArray);
 
 		T rightChildMin = RecursivelyFillST(
-			rightChildnodeIndex, 
+			rightChildNodeIndex, 
 			rightChildStartIndex, 
 			rightChildEndIndex, 
 			originalArray);
@@ -175,25 +175,25 @@ namespace srcmake {
 			// Recursively check this node's children and return the min between the two.
 			int middleIndex = nodeStartIndex + ((nodeEndIndex - nodeStartIndex) / 2);
 
-			int leftChildnodeIndex = 2 * nodeIndex + 1;
+			int leftChildNodeIndex = 2 * nodeIndex + 1;
 			int leftChildStartIndex = nodeStartIndex;
 			int leftChildEndIndex = middleIndex;
 
-			int rightChildnodeIndex = 2 * nodeIndex + 2;
+			int rightChildNodeIndex = 2 * nodeIndex + 2;
 			int rightChildStartIndex = middleIndex + 1;
 			int rightChildEndIndex = nodeEndIndex;
 
 			T leftChildMin = RecursivelySearchForMin(
 				L,
 				R,
-				leftChildnodeIndex, 
+				leftChildNodeIndex, 
 				leftChildStartIndex, 
 				leftChildEndIndex);
 
 			T rightChildMin = RecursivelySearchForMin(
 				L,
 				R,
-				rightChildnodeIndex, 
+				rightChildNodeIndex, 
 				rightChildStartIndex, 
 				rightChildEndIndex);
 
@@ -247,8 +247,8 @@ namespace srcmake {
 		// this node's children need to be updated.
 		int middleIndex = nodeStartIndex + ((nodeEndIndex - nodeStartIndex) / 2);
 
-		int leftChildnodeIndex = 2 * nodeIndex + 1;
-		int rightChildnodeIndex = 2 * nodeIndex + 2;
+		int leftChildNodeIndex = 2 * nodeIndex + 1;
+		int rightChildNodeIndex = 2 * nodeIndex + 2;
 
 		// We only need to update one subtree, either left or right, based on the newValueIndex.
 		// If the newValueIndex is in the left subtree...
@@ -261,7 +261,7 @@ namespace srcmake {
 			RecursivelyUpdate(
 				newValueIndex, 
 				newValue, 
-				leftChildnodeIndex, 
+				leftChildNodeIndex, 
 				leftChildStartIndex, 
 				leftChildEndIndex);
 			}
@@ -275,7 +275,7 @@ namespace srcmake {
 			RecursivelyUpdate(
 				newValueIndex, 
 				newValue, 
-				rightChildnodeIndex, 
+				rightChildNodeIndex, 
 				rightChildStartIndex, 
 				rightChildEndIndex);
 			}
@@ -283,7 +283,7 @@ namespace srcmake {
 		
 		// We need to recalculate this node's minimum based on its two children.
 		// (One of the children might have gotten updated.)
-		T value = std::min(st[leftChildnodeIndex], st[rightChildnodeIndex]);
+		T value = std::min(st[leftChildNodeIndex], st[rightChildNodeIndex]);
 
 		st[nodeIndex] = value;
 		}
